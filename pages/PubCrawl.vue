@@ -1,5 +1,13 @@
 <template>
-  <div class="pubCrawl">
+    
+  
+  <div class="pubcrawl">
+
+    <nav>
+          <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
+          <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
+    </nav>
+    
     <h1>Pub Crawl App</h1>
 
     <input type="text" placeholder="Enter location here!" v-model="loc" />
@@ -39,7 +47,9 @@
     >
   <gmap-marker
       :key="index"
-      v-for="(m, index) in markers"
+      v-for="(m, index) in catInfo.map((pub) => {return {
+            lat: parseFloat(pub.lat), lng: parseFloat(pub.lon)}
+          })"
       :position="m.position"
       :clickable="true"
     />
@@ -61,13 +71,7 @@ export default {
       catInfo: [],
       breed: '',
       center: { lat: 51.4803771, lng: -0.2005484 },
-      markers: [
-        {
-          position: {
-            lat: 51.4803771, lng: -0.2005484
-          },
-        }
-      ],
+      markers: [],
       zoom: 12,
       loc: '',
       selectedPubs: [],
@@ -112,7 +116,7 @@ export default {
       const respJ = await response.json();
       this.catInfo = respJ.elements.filter((pub) => ('tags' in pub) && ('name' in pub.tags));
 
-      respJ.elements.forEach(pub => {
+      this.selectedPubs.forEach(pub => {
 
         console.log(pub)
 
