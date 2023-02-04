@@ -103,7 +103,7 @@ export default {
 
     },
     pubToggle(pub){
-      (pub in this.selectedPubs)?this.selectedPubs.remove(pub) : this.selectedPubs.push(pub);
+      (!this.selectedPubs.includes(pub))? this.selectedPubs.push(pub) : this.selectedPubs.splice(this.selectedPubs.indexOf(pub), 1);;
     }
   },
 };
