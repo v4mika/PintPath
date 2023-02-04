@@ -37,6 +37,12 @@
       :zoom="zoom"
       style="width:100%; height: 500px;"
     >
+  <gmap-marker
+      :key="index"
+      v-for="(m, index) in markers"
+      :position="m.position"
+      :clickable="true"
+    />
     </gmap-map>
 
 
@@ -54,7 +60,14 @@ export default {
     return {
       catInfo: [],
       breed: '',
-      center: { lat: 37.7749, lng: -122.4194 },
+      center: { lat: 51.4803771, lng: -0.2005484 },
+      markers: [
+        {
+          position: {
+            lat: 51.4803771, lng: -0.2005484
+          },
+        }
+      ],
       zoom: 12,
       loc: '',
       selectedPubs: [],
@@ -75,6 +88,7 @@ export default {
       const lat = data.result.latitude;
       const lon = data.result.longitude;
       const radius = 1609.34;
+      this.center = {lat : lat, lng : lon}
       const query = `
         [out:json][timeout:25];
         (
@@ -96,9 +110,22 @@ export default {
         body: query,
       })
       const respJ = await response.json();
-      console.log(this.catInfo);
       this.catInfo = respJ.elements.filter((pub) => ('tags' in pub) && ('name' in pub.tags));
-      console.log(this.catInfo);
+
+      respJ.elements.forEach(pub => {
+
+        console.log(pub)
+
+        const position =  {
+            lat: parseFloat(pub.lat), lng: parseFloat(pub.lon)
+          }
+        console.log(this.markers)
+        this.markers.push({ position: position });
+      });
+       
+      
+
+    
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
 
     },
