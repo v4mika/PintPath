@@ -12,7 +12,7 @@
         <th>Selected</th>
       </tr>
       <!-- for every item in publist create a <tr> the key has to be something unique -->
-      <tr v-for="(pub, index) in catInfo.elements " :key="index">
+      <tr v-for="(pub, index) in catInfo " :key="index">
         <td>{{ (index += 1) }}</td>
         <td>{{ pub.tags?.name }}</td>
         <td>{{ pub.distance }}</td>
@@ -28,16 +28,17 @@
         </td>
       </tr>
     </table>
-  
+    
+    <pre> {{this.catInfo.elements}} </pre>
 
-    <template>
-  <gmap-map
-    :center="center"
-    :zoom="zoom"
-    style="width:100%; height: 500px;"
-  >
-  </gmap-map>
-</template>
+
+    <gmap-map
+      :center="center"
+      :zoom="zoom"
+      style="width:100%; height: 500px;"
+    >
+    </gmap-map>
+
 
   </div>
 
@@ -51,12 +52,12 @@ export default {
   // data is where we hold component level mutatable data.
   data() {
     return {
-      catInfo: '...',
+      catInfo: [],
       breed: '',
       center: { lat: 37.7749, lng: -122.4194 },
       zoom: 12,
       loc: '',
-      selectedPubs: '',
+      selectedPubs: [],
     };
   },
   methods: {
@@ -95,8 +96,9 @@ export default {
         body: query,
       })
       const respJ = await response.json();
-      console.log(respJ);
-      this.catInfo = respJ;
+      console.log(this.catInfo);
+      this.catInfo = respJ.elements.filter((pub) => ('tags' in pub) && ('name' in pub.tags));
+      console.log(this.catInfo);
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
 
     },
