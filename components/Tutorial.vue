@@ -6,7 +6,7 @@
     <button @click="getCatFactAdvanced">Click Me!</button>
     
 
-    <p>{{ catInfo.fact }}</p>
+    <p>{{ catInfo}}</p>
   </div>
 </template>
 
@@ -30,8 +30,9 @@ export default {
       console.log("Donwloading")
       // this example doesn't work as the API doesn't support it but this is what it may look like if you needed to pass data in the request
       // The user can enter a breed in the input we have in the template, which is then saved to "breed" in data and then we reference that here
-      /*const response = await fetch(
-        "https://nominatim.openstreetmap.org/search?q=&format=json"
+      console.log("fetchinggggg");
+      const response = await fetch(
+        'https://nominatim.openstreetmap.org/search?q=fulham&format=json'
         //`https://catfact.ninja/fact/breed/${this.breed}`
 
 
@@ -78,7 +79,7 @@ fetch("https://overpass-api.de/api/interpreter", {
   .then(data => console.log(data))
   .catch(error => console.error(error));
 
-      this.catInfo = await response.json();*/
+      this.catInfo = await response.json().json();*/
     },
   },
 };
