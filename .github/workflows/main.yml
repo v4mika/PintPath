@@ -14,4 +14,4 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "drink-out-to-help-out" #Must be unique in Heroku
-          heroku_email: "jmaielewisturner@gmail.com"
+          heroku_email: "jamielewisturner@gmail.com"
