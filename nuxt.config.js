@@ -19,10 +19,6 @@ export default {
     ]
   },
 
-  server: {
-    port: process.env.PORT || 5000
-  },
-
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
