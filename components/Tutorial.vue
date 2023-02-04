@@ -2,7 +2,7 @@
   <div class="pubCrawl">
     <h1>Pub Crawl App</h1>
 
-    <input type="text" placeholder="Enter location here!" v-model="breed" />
+    <input type="text" placeholder="Enter location here!" v-model="loc" />
     <button @click="getCatFactAdvanced">Click Me!</button>
 
     <table>
@@ -30,8 +30,12 @@
     </table>
     
 
-    <pre>{{ catInfo.elements }}</pre>
+    <pre>{{ catInfo}}</pre>
+
+    <Map></Map>
   </div>
+
+
 </template>
 
 <script>
@@ -43,6 +47,7 @@ export default {
     return {
       catInfo: '...',
       breed: '',
+      loc: '',
       selectedPubs: '',
     };
   },
@@ -53,19 +58,21 @@ export default {
     },
     async getCatFactAdvanced() {
       console.log("Donwloading")
-
-     
-      const lat = 51.4833074
-      const lon = -0.1996041
+      const locresponse = await fetch(
+      `https://api.postcodes.io/postcodes/${this.loc}`
+      )
+      
+      const data = await locresponse.json()
+      const lat = data.result.latitude;
+      const lon = data.result.longitude;
       const radius = 1609.34;
       const query = `
         [out:json][timeout:25];
         (
-          node["amenity"="bar"](51.5074, -0.1278, 51.5200, -0.1150);
-          node["amenity"="pub"](51.5074, -0.1278, 51.5200, -0.1150);
-          way["amenity"="bar"](51.5074, -0.1278, 51.5200, -0.1150);
-          way["amenity"="pub"](51.5074, -0.1278, 51.5200, -0.1150);
-
+          node(around:${radius},${lat},${lon})["amenity"="bar"];
+          node(around:${radius},${lat},${lon})["amenity"="pub"];
+          way(around:${radius},${lat},${lon})["amenity"="bar"];
+          way(around:${radius},${lat},${lon})["amenity"="pub"];
         );
         out body;
         >;
@@ -80,6 +87,7 @@ export default {
         body: query,
       })
       const respJ = await response.json();
+      console.log(respJ);
       this.catInfo = respJ;
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
 
@@ -98,7 +106,7 @@ export default {
   gap: 30px;
 }
 p {
-  max-width: 300px;
+  max-width: 100px;
 }
 button {
   background-color: rgb(224, 47, 47);
