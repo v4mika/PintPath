@@ -102,6 +102,9 @@ export default {
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
 
     },
+    pubToggle(pub){
+      (pub in this.selectedPubs)?this.selectedPubs.remove(pub) : this.selectedPubs.push(pub);
+    }
   },
 };
 </script>
