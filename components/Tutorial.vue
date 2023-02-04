@@ -14,7 +14,7 @@
       <!-- for every item in publist create a <tr> the key has to be something unique -->
       <tr v-for="(pub, index) in catInfo " :key="index">
         <td>{{ (index += 1) }}</td>
-        <td>{{ pub.tags?.name }}</td>
+        <td>{{ pub.name }}</td>
         <td>{{ pub.distance }}</td>
         <td>
           <!-- Here we have a conditional class, which means it only adds the class addedPub if selectedPubs includes pub -->
@@ -28,9 +28,7 @@
         </td>
       </tr>
     </table>
-    
-    <pre> {{this.catInfo.elements}} </pre>
-
+  
 
     <gmap-map
       :center="center"
@@ -47,6 +45,7 @@
 
 
   </div>
+
 
 
 </template>
@@ -87,7 +86,7 @@ export default {
       const data = await locresponse.json()
       const lat = data.result.latitude;
       const lon = data.result.longitude;
-      const radius = 1609.34;
+      const radius = 1600;
       this.center = {lat : lat, lng : lon}
       const query = `
         [out:json][timeout:25];
@@ -96,6 +95,8 @@ export default {
           node(around:${radius},${lat},${lon})["amenity"="pub"];
           way(around:${radius},${lat},${lon})["amenity"="bar"];
           way(around:${radius},${lat},${lon})["amenity"="pub"];
+          relation(around:${radius},${lat},${lon})["amenity"="bar"];
+          relation(around:${radius},${lat},${lon})["amenity"="pub"];
         );
         out body;
         >;
@@ -110,16 +111,39 @@ export default {
         body: query,
       })
       const respJ = await response.json();
-      this.catInfo = respJ.elements.filter((pub) => ('tags' in pub) && ('name' in pub.tags));
+      const nodes = respJ.elements;
 
-      respJ.elements.forEach(pub => {
 
-        console.log(pub)
+      function findNodeById(id){
+        for (var i = 0; i < nodes.length; i++){
+          const node = nodes[i];
+          if (node.id == id){
+            return node;
+          }
+        }
+        return null;
+      }
+      const pubs = []
+      nodes.forEach(node => {
+        if (node.type == "way" && node.tags.name){
+          const firstNode = findNodeById(node.nodes[0]);
+          if (firstNode){
+            pubs.push({"name" : node.tags.name, lat : firstNode.lat, lon : firstNode.lon})
+          }
+        }else if(node.type = "node" && node.types?.name ){
+          pubs.push({"name" : node.tags.name, lat : node.lat, lon : node.lon})
+        }
+      })
+      console.log("My pubs: ")
+      console.log(pubs);
+
+      this.catInfo = pubs;
+
+      pubs.forEach(pub => {
 
         const position =  {
             lat: parseFloat(pub.lat), lng: parseFloat(pub.lon)
           }
-        console.log(this.markers)
         this.markers.push({ position: position });
       });
        
