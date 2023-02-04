@@ -8,7 +8,15 @@
 
     <pre>{{ catInfo}}</pre>
 
-    <Map></Map>
+    <template>
+  <gmap-map
+    :center="center"
+    :zoom="zoom"
+    style="width:100%; height: 500px;"
+  >
+  </gmap-map>
+</template>
+
   </div>
 
 
@@ -23,6 +31,8 @@ export default {
     return {
       catInfo: '...',
       breed: '',
+      center: { lat: 37.7749, lng: -122.4194 },
+      zoom: 12
     };
   },
   methods: {
@@ -93,6 +103,8 @@ out skel qt;
   },
 };
 </script>
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only, 
     this means if I were to try to style anything outside of this file it wouldn't work! -->

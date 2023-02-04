@@ -1,6 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 
+import Vue from 'vue'
+import * as VueGoogleMaps from 'vue2-google-maps'
+ 
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAQNW2ZqBLEbgT6W16RFnxRhhPu99CiLE4',
+    libraries: 'places', 
+  },
+  installComponents: true
+})
+
 //  This is where we handle our seperate pages, Below are two examples of way's to create them.
 
 const routes = [
