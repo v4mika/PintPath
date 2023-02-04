@@ -7,7 +7,11 @@
     
 
     <pre>{{ catInfo}}</pre>
+
+    <Map></Map>
   </div>
+
+
 </template>
 
 <script>
@@ -31,7 +35,7 @@ export default {
       // this example doesn't work as the API doesn't support it but this is what it may look like if you needed to pass data in the request
       // The user can enter a breed in the input we have in the template, which is then saved to "breed" in data and then we reference that here
      /* console.log("fetchinggggg");
-      /*const response = await fetch(
+      const response = await fetch(
         'https://nominatim.openstreetmap.org/search?q=fulham&format=json'
         //`https://catfact.ninja/fact/breed/${this.breed}`
 
@@ -45,12 +49,10 @@ const radius = 1609.34;
       const query = `
 [out:json][timeout:25];
 (
-  node["amenity"="bar"](51.5074, -0.1278, 51.5200, -0.1150);
-  node["amenity"="pub"](51.5074, -0.1278, 51.5200, -0.1150);
-  way["amenity"="bar"](51.5074, -0.1278, 51.5200, -0.1150);
-  way["amenity"="pub"](51.5074, -0.1278, 51.5200, -0.1150);
-  relation["amenity"="bar"](51.5074, -0.1278, 51.5200, -0.1150);
-  relation["amenity"="pub"](51.5074, -0.1278, 51.5200, -0.1150);
+  node(around:${radius},${lat},${lon})["amenity"="bar"];
+  node(around:${radius},${lat},${lon})["amenity"="pub"];
+  way(around:${radius},${lat},${lon})["amenity"="bar"];
+  way(around:${radius},${lat},${lon})["amenity"="pub"];
 );
 out body;
 >;
@@ -65,6 +67,10 @@ out skel qt;
         body: query,
       })
       this.catInfo = await response.json();
+
+      
+
+      
         /*.then((response) => response.json())
         .then((data) => {
           console.log(data);
