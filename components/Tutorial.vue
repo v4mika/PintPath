@@ -1,5 +1,5 @@
 <template>
-  <div class="helloCutie">
+  <div class="pubCrawl">
     <h1>Pub Crawl App</h1>
 
     <input type="text" placeholder="Enter location here!" v-model="breed" />
@@ -89,7 +89,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only, 
     this means if I were to try to style anything outside of this file it wouldn't work! -->
 <style scoped>
-.helloCutie {
+.pubCrawl {
   display: flex;
   flex-direction: column;
   align-items: center;

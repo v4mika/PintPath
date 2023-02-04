@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 
 //  This is where we handle our seperate pages, Below are two examples of way's to create them.
-// you very cute and I love you very much
+
 const routes = [
   {
     path: '/',
