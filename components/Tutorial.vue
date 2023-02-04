@@ -2,7 +2,7 @@
   <div class="pubCrawl">
     <h1>Pub Crawl App</h1>
 
-    <input type="text" placeholder="Enter location here!" v-model="breed" />
+    <input type="text" placeholder="Enter location here!" v-model="loc" />
     <button @click="getCatFactAdvanced">Click Me!</button>
     
 
@@ -32,19 +32,14 @@ export default {
     },
     async getCatFactAdvanced() {
       console.log("Donwloading")
-      // this example doesn't work as the API doesn't support it but this is what it may look like if you needed to pass data in the request
-      // The user can enter a breed in the input we have in the template, which is then saved to "breed" in data and then we reference that here
-     /* console.log("fetchinggggg");
-      const response = await fetch(
-        'https://nominatim.openstreetmap.org/search?q=fulham&format=json'
-        //`https://catfact.ninja/fact/breed/${this.breed}`
-
-
-      );*/
-
-     
-      const lat = 51.4833074
-const lon = -0.1996041
+      const locresponse = await fetch(
+      `https://api.postcodes.io/postcodes/${this.loc}`
+      )
+      
+      const data = await locresponse.json()
+      console.log(data.result.latitude)
+      const lat = data.result.latitude;
+      const lon = data.result.longitude;
 const radius = 1609.34;
       const query = `
 [out:json][timeout:25];
