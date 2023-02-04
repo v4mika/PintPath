@@ -1,5 +1,13 @@
 <template>
-  <div class="pubCrawl">
+    
+  
+  <div class="pubcrawl">
+
+    <nav>
+          <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
+          <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
+    </nav>
+    
     <h1>Pub Crawl App</h1>
 
     <input type="text" placeholder="Enter location here!" v-model="loc" />
@@ -28,7 +36,9 @@
         </td>
       </tr>
     </table>
-  
+    
+    <pre> {{this.catInfo.elements}} </pre>
+
 
     <gmap-map
       :center="center"
@@ -47,7 +57,6 @@
   </div>
 
 
-
 </template>
 
 <script>
@@ -60,13 +69,7 @@ export default {
       catInfo: [],
       breed: '',
       center: { lat: 51.4803771, lng: -0.2005484 },
-      markers: [
-        {
-          position: {
-            lat: 51.4803771, lng: -0.2005484
-          },
-        }
-      ],
+      markers: [],
       zoom: 12,
       loc: '',
       selectedPubs: [],
@@ -86,7 +89,7 @@ export default {
       const data = await locresponse.json()
       const lat = data.result.latitude;
       const lon = data.result.longitude;
-      const radius = 1600;
+      const radius = 1609.34;
       this.center = {lat : lat, lng : lon}
       const query = `
         [out:json][timeout:25];
@@ -95,8 +98,6 @@ export default {
           node(around:${radius},${lat},${lon})["amenity"="pub"];
           way(around:${radius},${lat},${lon})["amenity"="bar"];
           way(around:${radius},${lat},${lon})["amenity"="pub"];
-          relation(around:${radius},${lat},${lon})["amenity"="bar"];
-          relation(around:${radius},${lat},${lon})["amenity"="pub"];
         );
         out body;
         >;
@@ -154,7 +155,7 @@ export default {
 
     },
     pubToggle(pub){
-      (pub in this.selectedPubs)?this.selectedPubs.remove(pub) : this.selectedPubs.push(pub);
+      (!this.selectedPubs.includes(pub))? this.selectedPubs.push(pub) : this.selectedPubs.splice(this.selectedPubs.indexOf(pub), 1);;
     }
   },
 };
