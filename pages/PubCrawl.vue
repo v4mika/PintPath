@@ -140,6 +140,52 @@
   </section>
 </div>
 
+<div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h1 class="text-xl font-semibold text-gray-900">Pub Golf</h1>
+        <p class="mt-2 text-sm text-gray-700">Once you have created your pub crawl route, why have more fun and play a game of pub golf</p>
+      </div>
+      <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+        <button type="button" @click="createPubGolf" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Create Pub Golf</button>
+      </div>
+    </div>
+    
+  
+    <div class="mt-8 flex flex-col">
+      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr class="divide-x divide-gray-200">
+                  <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">Hole</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Pub</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Drink</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-6">Par</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-6">Challenge</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pr-6">Score</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <tr v-for="(pub, index) in pubgolf" :key="pub.name" class="divide-x divide-gray-200">
+                  <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-6">{{ index+1 }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ pub.name }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ pub.drink }}</td>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">{{ pub.par }}</td>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">{{ pub.challenge }}</td>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 
 
 <div v-if="false">
@@ -214,6 +260,10 @@
   
 </div>
 
+  
+
+
+
 </template>
 
 <script>
@@ -230,8 +280,76 @@ export default {
       markers: [],
       zoom: 12,
       loc: '',
+      pubgolf : [],
       pubs : [],
       pub_crawl: [],
+      barChallenges: [
+            "Take a picture with the bartender",
+            "Sing a song in front of the whole bar",
+            "Try to get a stranger to buy you a drink",
+            "Do a shot with a group of strangers",
+            "Do a beer chugging contest",
+            "Dance with a stranger to a song played by the DJ",
+            "Play a game of darts or pool against a stranger",
+            "Take a group photo",
+            "Ask a stranger to tell you a joke",
+            "Try to get a barman to make you a custom drink",
+            "Do a karaoke song",
+            "Solve a crossword puzzle",
+            "Try to convince the barman to give you a free drink",
+            "Order a drink in a different language",
+            "Get someone to take a picture of you with a stranger",
+            "Do a dance-off with a stranger",
+            "Do a shot with someone who is drinking a different drink than you",
+            "Order a drink while giving someone a piggyback ride",
+            "Order a drink using only hand gestures",
+            "Get a stranger to draw you a picture",
+            "Order a drink in rhyming couplets",
+            "Order a drink with a fruit garnish",
+            "Dance with a stranger",
+            "Try to make a new friend at each remaining pub",
+            "Blow a kiss at a stranger",
+            "Get a stranger's phone number",
+            "Do a shot with a bald guy",
+            "Ask someone to marry you",
+            "Dance on a table",
+            "Do a body shot"
+        ], 
+        drinks: [
+            {drink: "Drink of tallest player's choice", par: 3},
+            {drink: "Drink of youngest player's choice", par: 2},
+            {drink: "Drink of least-haired player's choice", par: 4},
+            {drink: "Drink of weakest player's choice", par: 4},
+            {drink: "Drink of most sober player's choice", par: 3},
+            {drink: "Drink of smartest player's choice", par: 2},
+            {drink: "Mixed drink of your choice", par: 2},
+            {drink: "Draught Pint of your choice", par: 2},
+            {drink: "Cocktail of your choice", par: 2},
+            {drink: "Bartender's choice", par: 4},
+            {drink: "Vodka RedBull", par: 2},
+            {drink: "Vodka Coke", par: 2},
+            {drink: "Malibu Pineapple", par: 2},
+            {drink: "Gin & Tonic", par: 2},
+            {drink: "Jager Bomb", par: 1},
+            {drink: "Cheapest White", par: 2},
+            {drink: "Cheapest Red", par: 2},
+            {drink: "Tequila shot", par: 1},
+            {drink: "Vodka shot", par: 1},
+            {drink: "Sambuca shot", par: 1},
+            {drink: "Large Baileys", par: 2},
+            {drink: "Pint of Cider", par: 3},
+            {drink: "IPA", par: 4}
+        ],
+        penalties: [
+          {pen: "Spilling a drink", score: "+1"},
+          {pen: "Not finishing your drink", score: "+1"},
+          {pen: "Falling down", score: "+2"},
+          {pen: "Missing a hole", score: "+2"},
+          {pen: "Not finishing your drink", score: "+1"},
+          {pen: "Getting kicked out, or being refused a drink", score: "+3"},
+          {pen: "Throwing up", score: "+5"},
+          {pen: "Cheating", score: "+5"},
+        ],
       directions: null,
       pub_range: 1,
        people : [
@@ -255,8 +373,15 @@ export default {
       const response = await fetch('https://catfact.ninja/fact');
       this.catInfo = await response.json();
     },
+    async createPubGolf(){
+      this.pubgolf = []
+      this.pub_crawl.forEach(pub => {
+        const drink = this.drinks[Math.floor(Math.random() * (this.drinks.length))]
+        const challenge = this.barChallenges[Math.floor(Math.random() * (this.barChallenges.length))]
+        this.pubgolf.push({name : pub.name, drink : drink.drink, par : drink.par, challenge : challenge})
+      })
+    },
     async updateSelected(){
-      console.log("Test");
       this.pub_crawl = this.pubs.filter(x => x.selected)
       this.pub_crawl = shortestRoute(this.pub_crawl, this.pub_crawl.length)
     },
