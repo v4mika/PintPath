@@ -284,11 +284,9 @@ export default {
         console.error(error);
         return;
       };
-      console.log("something");
-      console.log(response);
+
       const respJ = await response.json();
-      console.log("something");
-      console.log(respJ);
+
       if (respJ == undefined){
         alert("invalid postcode");
       }
