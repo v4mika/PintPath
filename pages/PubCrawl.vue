@@ -83,7 +83,10 @@
               <input id="postcode"  required="" v-model="loc" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
             </div>
           </div>
-
+          <div class="slidecontainer">
+            <label for="myRange" class="block text-sm font-medium text-gray-700">Range: {{ pub_range }} mile(s)</label>
+            <input type="range" v-model = "pub_range" min="1" max="5" step="0.1" value="1" class="slider" id="myRange">
+          </div>
 
           <div>
             <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
@@ -218,6 +221,7 @@ export default {
       pubs : [],
       selectedPubs: [],
       directions: null,
+      pub_range: 1,
        people : [
   { id: 1, name: 'Annette Black' },
   { id: 2, name: 'Cody Fisher' },
@@ -247,7 +251,7 @@ export default {
       const data = await locresponse.json()
       const lat = data.result.latitude;
       const lon = data.result.longitude;
-      const radius = 1609.34;
+      const radius = 1609.34 * this.pub_range;
       this.center = {lat : lat, lng : lon}
       const query = `
         [out:json][timeout:25];
