@@ -35,7 +35,7 @@
       <div class="absolute inset-0 bg-gray-800 mix-blend-multiply" aria-hidden="true"></div>
     </div>
     <div class="relative mx-auto max-w-7xl py-24 px-6 sm:py-32 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">Drink out to help out</h1>
+      <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">PintPath - Drink out to help out</h1>
       <p class="mt-6 hidden max-w-3xl text-xl text-gray-300">Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui laoreet diam sed lacus, fames. Dui, amet, nec sit pulvinar.</p>
     </div>
   </div>
@@ -198,6 +198,33 @@
                   <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">{{ pub.par }}</td>
                   <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">{{ pub.challenge }}</td>
                   <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sm:flex-auto mt-6">
+        <h1 class="text-xl font-semibold text-gray-900">Pub Golf Rules</h1>
+        </div>
+
+    <div class="mt-2 flex flex-col">
+      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr class="divide-x divide-gray-200">
+                  <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">Penalty</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Score</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <tr v-for="(pub, index) in penalties" :key="pub.name" class="divide-x divide-gray-200">
+                  <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-6">{{ pub.pen }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ pub.score }}</td>
                 </tr>
               </tbody>
             </table>
