@@ -31,7 +31,7 @@
             @click="pubToggle(pub)"
           >
             <!-- this logic determines weather a + or - sign is present depending on weather the item is in the list -->
-            {{ selectedPubs.includes(pub) ? '-' : '+' }}
+            {{ pub.selected ? '+' : '-' }}
           </button>
         </td>
       </tr>
@@ -46,14 +46,16 @@
       style="width:100%; height: 500px;"
     >
 
-    
-  <gmap-marker
-      :key="index"
-      v-for="(m, index) in pubs"
-      :position="m.position"
-      :clickable="true"
-    />
+  <div v-for="(m, index) in pubs">
+    <gmap-marker
+        :key="index"
+        v-if="m.selected"
+        :position="m.position"
+        :clickable="true"
+      />
+  </div>
     </gmap-map>
+  
 
     <p  v-for="(m, index) in markers">{{ m.position }}</p>
     <p  v-for="(m, index) in pubs">{{ m.position }}</p>
@@ -137,10 +139,10 @@ export default {
         if (node.type == "way" && node.tags.name){
           const firstNode = findNodeById(node.nodes[0]);
           if (firstNode){
-            this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}})
+            this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}, "selected" : true})
           }
         }else if(node.type = "node" && node.types?.name ){
-          this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}})
+          this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : true})
         }
       })
       console.log("My pubs: ")
@@ -163,7 +165,7 @@ export default {
 
     },
     pubToggle(pub){
-      (!this.selectedPubs.includes(pub))? this.selectedPubs.push(pub) : this.selectedPubs.splice(this.selectedPubs.indexOf(pub), 1);;
+      pub.selected = !pub.selected
     }
   },
 };

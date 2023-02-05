@@ -1,4 +1,4 @@
-import {sin, cos, acos, pi} from 'mathjs'
+/*import {sin, cos, acos, pi} from 'mathjs'
 
 function dtr(n) {
     return n * (180/Math.PI)
@@ -22,4 +22,4 @@ function shortestRoute(points) {
     
 }
 
-export default distance
+export default distance*/
