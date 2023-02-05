@@ -128,13 +128,13 @@
       
       
   </div>
-  
-  <div  v-for="(p,i) in pub_crawl" >
-    <DirectionsRenderer v-if="i<pub_crawl.length-1" :key="index" travelMode="WALKING" :origin="pub_crawl[i]?.position" :destination="pub_crawl[i+1]?.position"/>
- 
+  <div v-if="pub_crawl.length > 0">
+  <div v-for="i in pub_crawl.length" v-if="i < pub_crawl.length">
+    <DirectionsRenderer :key="index" travelMode="WALKING" :origin="pub_crawl[i-1].position" :destination="pub_crawl[i].position"/>
   </div>
-     </gmap-map>
-  
+  </div>     
+</gmap-map>
+
       </div>
     </div>
   </section>
@@ -142,76 +142,6 @@
 
 
 
-<div v-if="false">
-
-    <nav>
-          <NuxtLink to="/pubcrawl">Pub Crawl Creator</NuxtLink> |
-          <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
-    </nav>
-    
-    <h1>Pub Crawl App</h1>
-
-    <input type="text" placeholder="Enter location here!"  />
-    <button @click="getCatFactAdvanced">Click Me!</button>
-
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Selected</th>
-      </tr>
-      <!-- for every item in publist create a <tr> the key has to be something unique -->
-      <tr v-for="(pub, index) in catInfo " :key="index">
-        <td>{{ (index += 1) }}</td>
-        <td>{{ pub.name }}</td>
-        <td>{{ pub.distance }}</td>
-        <td>
-          <!-- Here we have a conditional class, which means it only adds the class addedPub if selectedPubs includes pub -->
-          <button
-            :class="{ addedPub: pub_crawl.includes(pub) }"
-            @click="pubToggle(pub)"
-          >
-          
-            <!-- this logic determines weather a + or - sign is present depending on weather the item is in the list -->
-            {{ pub.selected ? '+' : '-' }}
-          </button>
-        </td>
-      </tr>
-    </table>
-    
-    <pre> {{this.catInfo.elements}} </pre>
-
-
-    <gmap-map
-      :center="center"
-      :zoom="zoom"
-      style="width:100%; height: 500px;"
-    >
-
-  <div v-for="(m, index) in pubs">
-    <gmap-marker
-        :key="index"
-        v-if="m.selected"
-        :position="m.position"
-        :clickable="true"
-      />
-      
-      
-  </div>
-  
- 
-  <DirectionsRenderer v-for="a in pub_crawl.length" :key="index" travelMode="WALKING" :origin="pub_crawl[a]?.position" :destination="pub_crawl[a+1]?.position"/>
-    </gmap-map>
-  
-
-    <p  v-for="(m, index) in markers">{{ m.position }}</p>
-    <p  v-for="(m, index) in pubs">{{ m.position }}</p>
-
-
-
-  </div>
-
-  
 </div>
 
 </template>
@@ -256,9 +186,9 @@ export default {
       this.catInfo = await response.json();
     },
     async updateSelected(){
-      console.log("Test");
-      this.pub_crawl = this.pubs.filter(x => x.selected)
-      this.pub_crawl = shortestRoute(this.pub_crawl, this.pub_crawl.length)
+      var x = this.pubs.filter(x => x.selected)
+      this.pub_crawl = shortestRoute(x, x.length)
+      this.pub_crawl.forEach(i => console.log(i.name))
     },
     async createCrawl(e) {
       e.preventDefault();
@@ -335,12 +265,12 @@ export default {
         }
       })
 
-      sortRoutes(this.pubs, lat, lon)
+      this.pubs = sortRoutes(this.pubs, lat, lon)
       console.log("My pubs: ")
       this.pub_crawl = shortestRoute(this.pubs, maxPubs)
 
       this.catInfo = this.pubs;
-
+      setTimeout(this.updateSelected, 500)
     /*  this.pubs.forEach(pub => {
 
         const position =  {

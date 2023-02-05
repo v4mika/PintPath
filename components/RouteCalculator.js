@@ -36,7 +36,8 @@ export function shortestRoute(points_n, pubs_selected) {
     return pub_crawl
 }
 
-export function sortRoutes(points, lat, lng) {
+export function sortRoutes(points_n, lat, lng) {
+    var points = [...points_n]
     function dist(a, b) {
         var a_dist = distance(a.position.lat, a.position.lng, lat, lng)
         var b_dist = distance(b.position.lat, b.position.lng, lat, lng)
@@ -44,6 +45,7 @@ export function sortRoutes(points, lat, lng) {
         return a_dist - b_dist
     }
     points.sort(dist)
+    return points
 }
 
 export default {shortestRoute, sortRoutes}
