@@ -1,14 +1,14 @@
 <template>
-  <nav>
-    <NuxtLink to="/pubcrawl">Pub Crawl Creator</NuxtLink> |
-    <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
-  </nav>
+  <PubCrawl/>
 </template>
 
 
 
 <script>
+import PubCrawl from './PubCrawl.vue';
+
 export default {
-  name: 'IndexPage'
+    name: "IndexPage",
+    components: { PubCrawl }
 }
 </script>
