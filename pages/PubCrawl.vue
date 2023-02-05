@@ -1,5 +1,13 @@
 <template>
-  <div class="pubCrawl">
+    
+  
+  <div class="pubcrawl">
+
+    <nav>
+          <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
+          <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
+    </nav>
+    
     <h1>Pub Crawl App</h1>
 
     <input type="text" placeholder="Enter location here!" v-model="loc" />
@@ -14,7 +22,7 @@
       <!-- for every item in publist create a <tr> the key has to be something unique -->
       <tr v-for="(pub, index) in catInfo " :key="index">
         <td>{{ (index += 1) }}</td>
-        <td>{{ pub.tags?.name }}</td>
+        <td>{{ pub.name }}</td>
         <td>{{ pub.distance }}</td>
         <td>
           <!-- Here we have a conditional class, which means it only adds the class addedPub if selectedPubs includes pub -->
@@ -61,13 +69,7 @@ export default {
       catInfo: [],
       breed: '',
       center: { lat: 51.4803771, lng: -0.2005484 },
-      markers: [
-        {
-          position: {
-            lat: 51.4803771, lng: -0.2005484
-          },
-        }
-      ],
+      markers: [],
       zoom: 12,
       loc: '',
       selectedPubs: [],
@@ -110,16 +112,39 @@ export default {
         body: query,
       })
       const respJ = await response.json();
-      this.catInfo = respJ.elements.filter((pub) => ('tags' in pub) && ('name' in pub.tags));
+      const nodes = respJ.elements;
 
-      respJ.elements.forEach(pub => {
 
-        console.log(pub)
+      function findNodeById(id){
+        for (var i = 0; i < nodes.length; i++){
+          const node = nodes[i];
+          if (node.id == id){
+            return node;
+          }
+        }
+        return null;
+      }
+      const pubs = []
+      nodes.forEach(node => {
+        if (node.type == "way" && node.tags.name){
+          const firstNode = findNodeById(node.nodes[0]);
+          if (firstNode){
+            pubs.push({"name" : node.tags.name, lat : firstNode.lat, lon : firstNode.lon})
+          }
+        }else if(node.type = "node" && node.types?.name ){
+          pubs.push({"name" : node.tags.name, lat : node.lat, lon : node.lon})
+        }
+      })
+      console.log("My pubs: ")
+      console.log(pubs);
+
+      this.catInfo = pubs;
+
+      pubs.forEach(pub => {
 
         const position =  {
             lat: parseFloat(pub.lat), lng: parseFloat(pub.lon)
           }
-        console.log(this.markers)
         this.markers.push({ position: position });
       });
        
@@ -130,7 +155,7 @@ export default {
 
     },
     pubToggle(pub){
-      (pub in this.selectedPubs)?this.selectedPubs.remove(pub) : this.selectedPubs.push(pub);
+      (!this.selectedPubs.includes(pub))? this.selectedPubs.push(pub) : this.selectedPubs.splice(this.selectedPubs.indexOf(pub), 1);;
     }
   },
 };
