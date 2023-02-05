@@ -89,7 +89,10 @@
           </div>
 
           <div>
-            <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
+
+            <button v-if="validatePostcode(loc)" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
+            <button disabled v-else class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Invalid Postcode</button>
+          
           </div>
           </form>
           </div>
@@ -160,6 +163,7 @@
             :class="{ addedPub: selectedPubs.includes(pub) }"
             @click="pubToggle(pub)"
           >
+          
             <!-- this logic determines weather a + or - sign is present depending on weather the item is in the list -->
             {{ pub.selected ? '+' : '-' }}
           </button>
@@ -232,7 +236,9 @@ export default {
 
 
       origin: { lat: 51.4803771, lng: -0.2005484  },
-      destination: { lat:  51.8803771, lng: -0.2005484 }
+      destination: { lat:  51.8803771, lng: -0.2005484 },
+
+      postcode: ""
     };
   },
 
@@ -319,8 +325,12 @@ export default {
 
     
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
-
     },
+    validatePostcode: function validatePostcode(postcode){
+          var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i; 
+          return postcodeRegEx.test(postcode); 
+    },
+
     pubToggle(pub){
       pub.selected = !pub.selected
     }
