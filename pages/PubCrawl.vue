@@ -244,9 +244,16 @@ export default {
     async createCrawl(e) {
       e.preventDefault();
       console.log("Donwloading")
-      const locresponse = await fetch(
+      var locresponse = "";
+      try {
+      locresponse = await fetch(
       `https://api.postcodes.io/postcodes/${this.loc}`
-      )
+      ) }catch(error){
+        console.log(error);
+        alert("Enter a valid postcode");
+        this.loc = "";
+        return;
+      }
       
       const data = await locresponse.json()
       const lat = data.result.latitude;
@@ -265,15 +272,26 @@ export default {
         >;
         out skel qt;
       `;
-
-      const response = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: query,
-      })
+      var response = ""
+      try {
+        response = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: query,
+      })}catch(error) {
+        console.error(error);
+        return;
+      };
+      console.log("something");
+      console.log(response);
       const respJ = await response.json();
+      console.log("something");
+      console.log(respJ);
+      if (respJ == undefined){
+        alert("invalid postcode");
+      }
       const nodes = respJ.elements;
 
       const maxPubs = 8
