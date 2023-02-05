@@ -1,0 +1,29 @@
+Drink of tallest player's choice, 3
+Drink of youngest player's choice, 2
+Drink of least-haired player's choice, 4
+Drink of weakest player's choice, 4
+Drink of most sober player's choice, 3
+Drink of smartest player's choice, 2
+Mixed drink of your choice, 2
+Mixed drink of your choice, 2
+Mixed drink of your choice, 2
+Draught Pint of your choice, 2
+Draught Pint of your choice, 3
+Draught Pint of your choice, 4
+Cocktail of your choice, 2
+Cocktail of your choice, 2
+Bartender's choice, 3
+Bartender's choice, 4
+Vodka RedBull, 2
+Vodka Coke, 2
+Malibu Pineapple, 2
+Gin & Tonic, 2
+Jager Bomb, 1
+Cheapest White, 2
+Cheapest Red, 2
+Tequila shot, 1
+Vodka shot, 1
+Sambuca shot, 1
+Large Baileys, 2
+Pint of Cider, 3
+IPA, 4
