@@ -45,16 +45,24 @@
       :zoom="zoom"
       style="width:100%; height: 500px;"
     >
+
+    
   <gmap-marker
       :key="index"
-      v-for="(m, index) in markers"
+      v-for="(m, index) in pubs"
       :position="m.position"
       :clickable="true"
     />
     </gmap-map>
 
+    <p  v-for="(m, index) in markers">{{ m.position }}</p>
+    <p  v-for="(m, index) in pubs">{{ m.position }}</p>
+
+
 
   </div>
+
+  
 
 
 </template>
@@ -72,6 +80,7 @@ export default {
       markers: [],
       zoom: 12,
       loc: '',
+      pubs : [],
       selectedPubs: [],
     };
   },
@@ -124,29 +133,28 @@ export default {
         }
         return null;
       }
-      const pubs = []
       nodes.forEach(node => {
         if (node.type == "way" && node.tags.name){
           const firstNode = findNodeById(node.nodes[0]);
           if (firstNode){
-            pubs.push({"name" : node.tags.name, lat : firstNode.lat, lon : firstNode.lon})
+            this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}})
           }
         }else if(node.type = "node" && node.types?.name ){
-          pubs.push({"name" : node.tags.name, lat : node.lat, lon : node.lon})
+          this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}})
         }
       })
       console.log("My pubs: ")
-      console.log(pubs);
+      console.log(this.pubs);
 
-      this.catInfo = pubs;
+      this.catInfo = this.pubs;
 
-      pubs.forEach(pub => {
+    /*  this.pubs.forEach(pub => {
 
         const position =  {
             lat: parseFloat(pub.lat), lng: parseFloat(pub.lon)
           }
         this.markers.push({ position: position });
-      });
+      });*/
        
       
 
