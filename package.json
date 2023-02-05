@@ -11,9 +11,11 @@
   "dependencies": {
     "core-js": "^3.25.3",
     "google-maps": "^4.3.3",
+    "mathsjs": "^1.4.0",
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
+    "vue-slider-component": "^3.2.24",
     "vue-template-compiler": "^2.7.10",
     "vue2-google-maps": "^0.10.7"
   },
