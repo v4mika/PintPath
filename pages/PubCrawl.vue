@@ -48,12 +48,12 @@
     <div class="grid grid-cols-1 gap-y-20 lg:grid-cols-2 lg:gap-y-0 lg:gap-x-8">
 
 
-      <div v-if="pubs.length > 0" class="flex flex-col rounded-2xl bg-white shadow-xl">
-        <div class="relative flex-1 px-6 pt-16 pb-8 md:px-8">
+      <div v-if="pubs.length > 0" class="flex flex-col rounded-2xl bg-white shadow-xl ">
+        <div class="relative flex-1 px-6 pt-16 pb-8 md:px-8 ">
 
           <fieldset>
-    <legend class="text-lg font-medium text-gray-900">Your Pub Crawl</legend>
-    <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
+    <legend class="text-lg font-medium text-gray-900">Select Pubs</legend>
+    <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200 overflow-y-auto h-64">
       <div v-for="(pub,index) in pubs" :key="personIdx" class="relative flex items-start py-4">
         <div class="min-w-0 flex-1 text-sm">
           <label :for="`person-${pub.name}`" class="select-none mr-4 font-medium text-gray-700">{{ index+1 }}</label>
@@ -62,14 +62,9 @@
         <div class="min-w-0 flex-1 text-sm">
          
         </div>
-        <div class="ml-3 flex h-5 items-center">
+        <div class="ml-3 mr-3 flex h-5 items-center">
           <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" v-on:change="updateSelected()" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
         </div>
-      </div>
-      <div>
-        <a href="/pubgolf">
-          <button v-if="pubs.length != 0" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Pub Golf!</button>
-        </a>
       </div>
     </div>
      </fieldset>
@@ -139,8 +134,36 @@
     </div>
   </section>
 </div>
+ <section class="relative z-10 mx-auto -mt-32 max-w-8xl px-6 pb-32 lg:px-8" aria-labelledby="contact-heading">
+    <h2 class="sr-only" id="contact-heading">Contact us</h2>
 
-<div class="px-4 sm:px-6 lg:px-8">
+
+    <div class="grid grid-cols-1 gap-y-20 lg:grid-cols-2 lg:gap-y-0 lg:gap-x-8">
+<div v-if="pubs.length > 0" class="flex flex-col rounded-2xl bg-white shadow-xl mt-4">
+        <div class="relative flex-1 px-6 pt-16 pb-8 md:px-8 ">
+
+          <fieldset>
+    <legend class="text-lg font-medium text-gray-900">Your Pub Crawl (In Order)</legend>
+    <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200 ">
+      <div v-for="(pub,index) in pub_crawl" :key="personIdx" class="relative flex items-start py-4">
+        <div class="min-w-0 flex-1 text-sm">
+          <label :for="`person-${pub.name}`" class="select-none mr-4 font-medium text-gray-700">{{ index+1 }}</label>
+          <label :for="`person-${pub.name}`" class="select-none font-medium text-gray-700">{{ pub.name }}</label>
+        </div>
+        <div class="min-w-0 flex-1 text-sm">
+         
+        </div>
+      </div>
+    </div>
+     </fieldset>
+           </div>
+
+       
+      </div>
+      </div>
+      </section>
+
+<div class="px-4 sm:px-6 lg:px-8 pb-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
         <h1 class="text-xl font-semibold text-gray-900">Pub Golf</h1>
