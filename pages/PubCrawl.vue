@@ -70,7 +70,7 @@
 </template>
 
 <script>
- 
+import shortestRoute from '../components/RouteCalculator';
 export default {
   name: 'HelloWorld',
   // data is where we hold component level mutatable data.
@@ -146,7 +146,7 @@ export default {
         }
       })
       console.log("My pubs: ")
-      console.log(this.pubs);
+      this.pubs = shortestRoute(this.pubs)
 
       this.catInfo = this.pubs;
 
