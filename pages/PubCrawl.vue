@@ -35,7 +35,7 @@
       <div class="absolute inset-0 bg-gray-800 mix-blend-multiply" aria-hidden="true"></div>
     </div>
     <div class="relative mx-auto max-w-7xl py-24 px-6 sm:py-32 lg:px-8">
-      <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">PintPath - Drink out to help out</h1>
+      <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">PintPath - Drink Out To Help Out</h1>
       <p class="mt-6 hidden max-w-3xl text-xl text-gray-300">Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui laoreet diam sed lacus, fames. Dui, amet, nec sit pulvinar.</p>
     </div>
   </div>

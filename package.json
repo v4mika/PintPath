@@ -18,8 +18,5 @@
     "vue-slider-component": "^3.2.24",
     "vue-template-compiler": "^2.7.10",
     "vue2-google-maps": "^0.10.7"
-  },
-  "engines": {
-    "node": "19.6.0"
   }
 }
