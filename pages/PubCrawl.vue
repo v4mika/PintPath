@@ -137,7 +137,7 @@
 <div v-if="false">
 
     <nav>
-          <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
+          <NuxtLink to="/pubcrawl">Pub Crawl Creator</NuxtLink> |
           <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
     </nav>
     
@@ -250,9 +250,16 @@ export default {
     async createCrawl(e) {
       e.preventDefault();
       console.log("Donwloading")
-      const locresponse = await fetch(
+      var locresponse = "";
+      try {
+      locresponse = await fetch(
       `https://api.postcodes.io/postcodes/${this.loc}`
-      )
+      ) }catch(error){
+        console.log(error);
+        alert("Enter a valid postcode");
+        this.loc = "";
+        return;
+      }
       
       const data = await locresponse.json()
       const lat = data.result.latitude;
@@ -271,15 +278,24 @@ export default {
         >;
         out skel qt;
       `;
+      var response = ""
+      try {
+        response = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: query,
+      })}catch(error) {
+        console.error(error);
+        return;
+      };
 
-      const response = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: query,
-      })
       const respJ = await response.json();
+
+      if (respJ == undefined){
+        alert("invalid postcode");
+      }
       const nodes = respJ.elements;
 
       const maxPubs = 8

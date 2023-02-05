@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.25.3",
+    "google-maps": "^4.3.3",
     "mathsjs": "^1.4.0",
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
@@ -19,6 +20,6 @@
     "vue2-google-maps": "^0.10.7"
   },
   "engines": {
-    "node": "18.x"
+    "node": "19.6.0"
   }
 }
