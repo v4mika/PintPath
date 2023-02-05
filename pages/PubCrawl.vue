@@ -53,7 +53,12 @@
         :position="m.position"
         :clickable="true"
       />
+      
+      
   </div>
+  
+ 
+  <DirectionsRenderer v-for="a in [0,1,2,3,4,5,6,7,8,9,10]" :key="index" travelMode="WALKING" :origin="pubs[a]?.position" :destination="pubs[a+1]?.position"/>
     </gmap-map>
   
 
@@ -70,7 +75,7 @@
 </template>
 
 <script>
- 
+ //<DirectionsRenderer travelMode="DRIVING" :origin="m.position" :destination="{ lat: 51.4824195, lng: -0.1788034 }"/>
 export default {
   name: 'HelloWorld',
   // data is where we hold component level mutatable data.
@@ -84,8 +89,13 @@ export default {
       loc: '',
       pubs : [],
       selectedPubs: [],
+      directions: null,
+
+      origin: { lat: 51.4803771, lng: -0.2005484  },
+      destination: { lat:  51.8803771, lng: -0.2005484 }
     };
   },
+
   methods: {
     async getCatFact() {
       const response = await fetch('https://catfact.ninja/fact');
@@ -125,6 +135,8 @@ export default {
       const respJ = await response.json();
       const nodes = respJ.elements;
 
+      const maxPubs = 5
+
 
       function findNodeById(id){
         for (var i = 0; i < nodes.length; i++){
@@ -145,6 +157,8 @@ export default {
           this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : true})
         }
       })
+
+      this.pubs = this.pubs.slice(0, maxPubs)
       console.log("My pubs: ")
       console.log(this.pubs);
 
