@@ -13,6 +13,8 @@
         <input type="text" placeholder="Enter how many holes in the course" v-model="loc" />
         <button @click="getCatFactAdvanced">Click Me!</button>
 
+        <!--do we want a re-roll option if the drink is not at the pub?-->
+
     </div>
 </template>   
 
