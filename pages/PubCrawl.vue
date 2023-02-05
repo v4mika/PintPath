@@ -343,7 +343,7 @@ export default {
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
     },
     validatePostcode: function validatePostcode(postcode){
-          var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i; 
+          var postcodeRegEx = /^[A-Z]{1,2}[0-9]{1,2}[A-Z]{0,1} ?[0-9][A-Z]{2}$/i; 
           return postcodeRegEx.test(postcode); 
     },
 
