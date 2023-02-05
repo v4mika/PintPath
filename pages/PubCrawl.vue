@@ -147,13 +147,14 @@ export default {
         }
         return null;
       }
+      console.log(nodes)
       nodes.forEach(node => {
         if (node.type == "way" && node.tags.name){
           const firstNode = findNodeById(node.nodes[0]);
           if (firstNode){
             this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}, "selected" : true})
           }
-        }else if(node.type = "node" && node.types?.name ){
+        }else if(node.type = "node" && node.tags?.name ){
           this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : true})
         }
       })
