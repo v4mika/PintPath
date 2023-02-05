@@ -66,11 +66,7 @@
           <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" v-on:change="updateSelected()" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
         </div>
       </div>
-      <div>
-        <a href="/pubgolf">
-          <button v-if="pubs.length != 0" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Pub Golf!</button>
-        </a>
-      </div>
+      
     </div>
      </fieldset>
            </div>
@@ -144,7 +140,7 @@
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
         <h1 class="text-xl font-semibold text-gray-900">Pub Golf</h1>
-        <p class="mt-2 text-sm text-gray-700">Once you have created your pub crawl route, why have more fun and play a game of pub golf</p>
+        <p class="mt-2 text-sm text-gray-700">Once you have created your pub crawl route, why not have more fun and play a game of pub golf</p>
       </div>
       <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
         <button type="button" @click="createPubGolf" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Create Pub Golf</button>
