@@ -3,6 +3,133 @@
   
   <div class="pubcrawl">
 
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <!--
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+-->
+<!--
+  This example requires updating your template:
+
+  ```
+  <html class="h-full bg-gray-50">
+  <body class="h-full">
+  ```
+-->
+<div class="bg-white">
+  <!-- Header -->
+  <div class="relative bg-gray-800 pb-32">
+    <div class="absolute inset-0">
+      <img class="h-full w-full object-cover" src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&&sat=-100" alt="">
+      <div class="absolute inset-0 bg-gray-800 mix-blend-multiply" aria-hidden="true"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl py-24 px-6 sm:py-32 lg:px-8">
+      <h1 class="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">Drink out to help out</h1>
+      <p class="mt-6 hidden max-w-3xl text-xl text-gray-300">Varius facilisi mauris sed sit. Non sed et duis dui leo, vulputate id malesuada non. Cras aliquet purus dui laoreet diam sed lacus, fames. Dui, amet, nec sit pulvinar.</p>
+    </div>
+  </div>
+
+  <!-- Overlapping cards -->
+  <section class="relative z-10 mx-auto -mt-32 max-w-8xl px-6 pb-32 lg:px-8" aria-labelledby="contact-heading">
+    <h2 class="sr-only" id="contact-heading">Contact us</h2>
+
+
+    <div class="grid grid-cols-1 gap-y-20 lg:grid-cols-2 lg:gap-y-0 lg:gap-x-8">
+
+
+      <div v-if="pubs.length > 0" class="flex flex-col rounded-2xl bg-white shadow-xl">
+        <div class="relative flex-1 px-6 pt-16 pb-8 md:px-8">
+
+          <fieldset>
+    <legend class="text-lg font-medium text-gray-900">Your Pub Crawl</legend>
+    <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
+      <div v-for="(pub,index) in pubs" :key="personIdx" class="relative flex items-start py-4">
+        <div class="min-w-0 flex-1 text-sm">
+          <label :for="`person-${pub.name}`" class="select-none mr-4 font-medium text-gray-700">{{ index+1 }}</label>
+          <label :for="`person-${pub.name}`" class="select-none font-medium text-gray-700">{{ pub.name }}</label>
+        </div>
+        <div class="min-w-0 flex-1 text-sm">
+         
+        </div>
+        <div class="ml-3 flex h-5 items-center">
+          <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+        </div>
+      </div>
+    </div>
+     </fieldset>
+           </div>
+
+       
+      </div>
+
+      <div v-if="pubs.length == 0" class="flex flex-col rounded-2xl bg-white shadow-xl h-u">
+
+      <div class="bg-white py-8 px-4  sm:rounded-lg sm:px-10">
+        <form class="space-y-6" action="#" v-on:submit="createCrawl">
+          <div>
+            <label for="postcode" class="block text-sm font-medium text-gray-700">Postcode</label>
+            <div class="mt-1">
+              <input id="postcode"  required="" v-model="loc" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+            </div>
+          </div>
+
+
+          <div>
+            <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
+          </div>
+          </form>
+          </div>
+         
+        </div>
+
+
+      
+
+  
+
+    
+      <div class="flex flex-col rounded-2xl bg-white shadow-xl">
+
+        <gmap-map
+      :center="center"
+      :zoom="zoom"
+      style="width:100%; height: 500px;"
+    >
+
+  <div v-for="(m, index) in pubs">
+    <gmap-marker
+        :key="index"
+        v-if="m.selected"
+        :position="m.position"
+        :clickable="true"
+      />
+      
+      
+  </div>
+  
+ 
+  <DirectionsRenderer v-for="a in [0,1,2,3,4,5,6,7,8,9,10]" :key="index" travelMode="WALKING" :origin="pubs[a]?.position" :destination="pubs[a+1]?.position"/>
+    </gmap-map>
+  
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<div v-if="false">
+
     <nav>
           <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
           <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
@@ -10,7 +137,7 @@
     
     <h1>Pub Crawl App</h1>
 
-    <input type="text" placeholder="Enter location here!" v-model="loc" />
+    <input type="text" placeholder="Enter location here!"  />
     <button @click="getCatFactAdvanced">Click Me!</button>
 
     <table>
@@ -53,7 +180,12 @@
         :position="m.position"
         :clickable="true"
       />
+      
+      
   </div>
+  
+ 
+  <DirectionsRenderer v-for="a in [0,1,2,3,4,5,6,7,8,9,10]" :key="index" travelMode="WALKING" :origin="pubs[a]?.position" :destination="pubs[a+1]?.position"/>
     </gmap-map>
   
 
@@ -65,12 +197,13 @@
   </div>
 
   
-
+</div>
 
 </template>
 
 <script>
- 
+import {shortestRoute, sortRoutes} from '../components/RouteCalculator';
+
 export default {
   name: 'HelloWorld',
   // data is where we hold component level mutatable data.
@@ -84,14 +217,28 @@ export default {
       loc: '',
       pubs : [],
       selectedPubs: [],
+      directions: null,
+       people : [
+  { id: 1, name: 'Annette Black' },
+  { id: 2, name: 'Cody Fisher' },
+  { id: 3, name: 'Courtney Henry' },
+  { id: 4, name: 'Kathryn Murphy' },
+  { id: 5, name: 'Theresa Webb' },
+],
+
+
+      origin: { lat: 51.4803771, lng: -0.2005484  },
+      destination: { lat:  51.8803771, lng: -0.2005484 }
     };
   },
+
   methods: {
     async getCatFact() {
       const response = await fetch('https://catfact.ninja/fact');
       this.catInfo = await response.json();
     },
-    async getCatFactAdvanced() {
+    async createCrawl(e) {
+      e.preventDefault();
       console.log("Donwloading")
       const locresponse = await fetch(
       `https://api.postcodes.io/postcodes/${this.loc}`
@@ -125,6 +272,8 @@ export default {
       const respJ = await response.json();
       const nodes = respJ.elements;
 
+      const maxPubs = 8
+
 
       function findNodeById(id){
         for (var i = 0; i < nodes.length; i++){
@@ -135,18 +284,22 @@ export default {
         }
         return null;
       }
+      console.log(nodes)
       nodes.forEach(node => {
         if (node.type == "way" && node.tags.name){
           const firstNode = findNodeById(node.nodes[0]);
           if (firstNode){
             this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}, "selected" : true})
           }
-        }else if(node.type = "node" && node.types?.name ){
+        }else if(node.type = "node" && node.tags?.name ){
           this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : true})
         }
       })
+
+      sortRoutes(this.pubs, lat, lon)
+      this.pubs = this.pubs.slice(0, maxPubs)
       console.log("My pubs: ")
-      console.log(this.pubs);
+      this.pubs = shortestRoute(this.pubs)
 
       this.catInfo = this.pubs;
 
@@ -175,36 +328,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only, 
     this means if I were to try to style anything outside of this file it wouldn't work! -->
-<style scoped>
-.pubCrawl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
-p {
-  max-width: 100px;
-}
-button {
-  background-color: rgb(224, 47, 47);
-  border: transparent;
-  border-radius: 2px;
-  padding: 4px 10px;
 
-  color: rgb(240, 240, 240);
-}
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
