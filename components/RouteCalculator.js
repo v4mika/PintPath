@@ -16,7 +16,7 @@ function distance(lat1, lon1, lat2, lon2) {
     return d;
 }
 
-function shortestRoute(points) {
+export function shortestRoute(points) {
 
     function closestPoint(a, points) {
         var min_dist = 10000000000
@@ -41,4 +41,14 @@ function shortestRoute(points) {
     return sorted_points
 }
 
-export default shortestRoute
+export function sortRoutes(points, lat, lng) {
+    function dist(a, b) {
+        var a_dist = distance(a.position.lat, a.position.lng, lat, lng)
+        var b_dist = distance(b.position.lat, b.position.lng, lat, lng)
+
+        return a_dist - b_dist
+    }
+    points.sort(dist)
+}
+
+export default {shortestRoute, sortRoutes}

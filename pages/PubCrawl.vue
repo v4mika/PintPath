@@ -202,7 +202,8 @@
 </template>
 
 <script>
-import shortestRoute from '../components/RouteCalculator';
+import {shortestRoute, sortRoutes} from '../components/RouteCalculator';
+
 export default {
   name: 'HelloWorld',
   // data is where we hold component level mutatable data.
@@ -295,6 +296,7 @@ export default {
         }
       })
 
+      sortRoutes(this.pubs, lat, lon)
       this.pubs = this.pubs.slice(0, maxPubs)
       console.log("My pubs: ")
       this.pubs = shortestRoute(this.pubs)
