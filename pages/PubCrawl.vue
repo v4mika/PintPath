@@ -202,7 +202,7 @@
 </template>
 
 <script>
- //<DirectionsRenderer travelMode="DRIVING" :origin="m.position" :destination="{ lat: 51.4824195, lng: -0.1788034 }"/>
+import shortestRoute from '../components/RouteCalculator';
 export default {
   name: 'HelloWorld',
   // data is where we hold component level mutatable data.
@@ -296,7 +296,7 @@ export default {
 
       this.pubs = this.pubs.slice(0, maxPubs)
       console.log("My pubs: ")
-      console.log(this.pubs);
+      this.pubs = shortestRoute(this.pubs)
 
       this.catInfo = this.pubs;
 
