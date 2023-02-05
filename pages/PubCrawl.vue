@@ -66,6 +66,9 @@
           <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
         </div>
       </div>
+      <div>
+        <button v-if="pubs.length != 0" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Pub Golf!</button>
+      </div>
     </div>
      </fieldset>
            </div>
@@ -132,6 +135,7 @@
     </div>
   </section>
 </div>
+
 
 
 <div v-if="false">
@@ -336,12 +340,10 @@ export default {
           }
         this.markers.push({ position: position });
       });*/
-       
-      
-
     
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
     },
+
     validatePostcode: function validatePostcode(postcode){
           var postcodeRegEx = /^[A-Z]{1,2}[0-9]{1,2}[A-Z]{0,1} ?[0-9][A-Z]{2}$/i; 
           return postcodeRegEx.test(postcode); 
