@@ -63,7 +63,7 @@
          
         </div>
         <div class="ml-3 flex h-5 items-center">
-          <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+          <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" v-on:change="updateSelected()" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
         </div>
       </div>
     </div>
@@ -118,9 +118,11 @@
       
   </div>
   
+  <div  v-for="(p,i) in pub_crawl" >
+    <DirectionsRenderer v-if="i<pub_crawl.length-1" :key="index" travelMode="WALKING" :origin="pub_crawl[i]?.position" :destination="pub_crawl[i+1]?.position"/>
  
-  <DirectionsRenderer v-for="a in [0,1,2,3,4,5,6,7,8,9,10]" :key="index" travelMode="WALKING" :origin="pubs[a]?.position" :destination="pubs[a+1]?.position"/>
-    </gmap-map>
+  </div>
+     </gmap-map>
   
       </div>
     </div>
@@ -154,7 +156,7 @@
         <td>
           <!-- Here we have a conditional class, which means it only adds the class addedPub if selectedPubs includes pub -->
           <button
-            :class="{ addedPub: selectedPubs.includes(pub) }"
+            :class="{ addedPub: pub_crawl.includes(pub) }"
             @click="pubToggle(pub)"
           >
             <!-- this logic determines weather a + or - sign is present depending on weather the item is in the list -->
@@ -185,7 +187,7 @@
   </div>
   
  
-  <DirectionsRenderer v-for="a in [0,1,2,3,4,5,6,7,8,9,10]" :key="index" travelMode="WALKING" :origin="pubs[a]?.position" :destination="pubs[a+1]?.position"/>
+  <DirectionsRenderer v-for="a in pub_crawl.length" :key="index" travelMode="WALKING" :origin="pub_crawl[a]?.position" :destination="pub_crawl[a+1]?.position"/>
     </gmap-map>
   
 
@@ -216,7 +218,7 @@ export default {
       zoom: 12,
       loc: '',
       pubs : [],
-      selectedPubs: [],
+      pub_crawl: [],
       directions: null,
        people : [
   { id: 1, name: 'Annette Black' },
@@ -236,6 +238,11 @@ export default {
     async getCatFact() {
       const response = await fetch('https://catfact.ninja/fact');
       this.catInfo = await response.json();
+    },
+    async updateSelected(){
+      console.log("Test");
+      this.pub_crawl = this.pubs.filter(x => x.selected)
+      this.pub_crawl = shortestRoute(this.pub_crawl, this.pub_crawl.length)
     },
     async createCrawl(e) {
       e.preventDefault();
@@ -289,17 +296,16 @@ export default {
         if (node.type == "way" && node.tags.name){
           const firstNode = findNodeById(node.nodes[0]);
           if (firstNode){
-            this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}, "selected" : true})
+            this.pubs.push({"name" : node.tags.name, position:{lat : firstNode.lat, lng : firstNode.lon}, "selected" : false})
           }
         }else if(node.type = "node" && node.tags?.name ){
-          this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : true})
+          this.pubs.push({"name" : node.tags.name,  position:{lat : node.lat, lng : node.lon}, "selected" : false})
         }
       })
 
       sortRoutes(this.pubs, lat, lon)
-      this.pubs = this.pubs.slice(0, maxPubs)
       console.log("My pubs: ")
-      this.pubs = shortestRoute(this.pubs)
+      this.pub_crawl = shortestRoute(this.pubs, maxPubs)
 
       this.catInfo = this.pubs;
 

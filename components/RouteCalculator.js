@@ -16,8 +16,8 @@ function distance(lat1, lon1, lat2, lon2) {
     return d;
 }
 
-export function shortestRoute(points) {
-
+export function shortestRoute(points_n, pubs_selected) {
+    var points = [...points_n]
     function closestPoint(a, points) {
         var min_dist = 10000000000
         var nxt_pub;
@@ -30,15 +30,16 @@ export function shortestRoute(points) {
         }
         return nxt_pub
     }
-    var sorted_points = [points[0]]
+    var pub_crawl = [points[0]]
     points = points.slice(1)
     var n = points.length
-    for (var i = 0; i < n; i++) {
-        var new_pub = closestPoint(sorted_points[i], points)
-        sorted_points.push(points[new_pub])
+    for (var i = 0; i < pubs_selected - 1; i++) {
+        var new_pub = closestPoint(pub_crawl[i], points)
+        points[new_pub].selected = true
+        pub_crawl.push(points[new_pub])
         points.splice(new_pub, 1)
     }
-    return sorted_points
+    return pub_crawl
 }
 
 export function sortRoutes(points, lat, lng) {
