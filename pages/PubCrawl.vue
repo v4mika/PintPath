@@ -66,6 +66,11 @@
           <input :id="`person-${pub.name}`" v-model="pub.selected" :name="`person-${pub.name}`" type="checkbox" v-on:change="updateSelected()" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
         </div>
       </div>
+      <div>
+        <a href="/pubgolf">
+          <button v-if="pubs.length != 0" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Pub Golf!</button>
+        </a>
+      </div>
     </div>
      </fieldset>
            </div>
@@ -83,10 +88,16 @@
               <input id="postcode"  required="" v-model="loc" class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
             </div>
           </div>
-
+          <div class="slidecontainer">
+            <label for="myRange" class="block text-sm font-medium text-gray-700">Range: {{ pub_range }} mile(s)</label>
+            <input type="range" v-model = "pub_range" min="1" max="5" step="0.1" value="1" class="slider" id="myRange">
+          </div>
 
           <div>
-            <button type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
+
+            <button v-if="validatePostcode(loc)" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Create</button>
+            <button disabled v-else class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Enter Valid Postcode</button>
+          
           </div>
           </form>
           </div>
@@ -130,10 +141,11 @@
 </div>
 
 
+
 <div v-if="false">
 
     <nav>
-          <NuxtLink to="/">Pub Crawl Creator</NuxtLink> |
+          <NuxtLink to="/pubcrawl">Pub Crawl Creator</NuxtLink> |
           <NuxtLink to="/pubgolf">Pub Golf</NuxtLink>
     </nav>
     
@@ -159,6 +171,7 @@
             :class="{ addedPub: pub_crawl.includes(pub) }"
             @click="pubToggle(pub)"
           >
+          
             <!-- this logic determines weather a + or - sign is present depending on weather the item is in the list -->
             {{ pub.selected ? '+' : '-' }}
           </button>
@@ -220,6 +233,7 @@ export default {
       pubs : [],
       pub_crawl: [],
       directions: null,
+      pub_range: 1,
        people : [
   { id: 1, name: 'Annette Black' },
   { id: 2, name: 'Cody Fisher' },
@@ -230,7 +244,9 @@ export default {
 
 
       origin: { lat: 51.4803771, lng: -0.2005484  },
-      destination: { lat:  51.8803771, lng: -0.2005484 }
+      destination: { lat:  51.8803771, lng: -0.2005484 },
+
+      postcode: ""
     };
   },
 
@@ -247,14 +263,21 @@ export default {
     async createCrawl(e) {
       e.preventDefault();
       console.log("Donwloading")
-      const locresponse = await fetch(
+      var locresponse = "";
+      try {
+      locresponse = await fetch(
       `https://api.postcodes.io/postcodes/${this.loc}`
-      )
+      ) }catch(error){
+        console.log(error);
+        alert("Enter a valid postcode");
+        this.loc = "";
+        return;
+      }
       
       const data = await locresponse.json()
       const lat = data.result.latitude;
       const lon = data.result.longitude;
-      const radius = 1609.34;
+      const radius = 1609.34 * this.pub_range;
       this.center = {lat : lat, lng : lon}
       const query = `
         [out:json][timeout:25];
@@ -268,15 +291,24 @@ export default {
         >;
         out skel qt;
       `;
+      var response = ""
+      try {
+        response = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: query,
+      })}catch(error) {
+        console.error(error);
+        return;
+      };
 
-      const response = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: query,
-      })
       const respJ = await response.json();
+
+      if (respJ == undefined){
+        alert("invalid postcode");
+      }
       const nodes = respJ.elements;
 
       const maxPubs = 8
@@ -316,13 +348,15 @@ export default {
           }
         this.markers.push({ position: position });
       });*/
-       
-      
-
     
       //this.catInfo = respJ.elements.filter((pub) => pub.includes("tags") && pub.tags?.includes("name"));
-
     },
+
+    validatePostcode: function validatePostcode(postcode){
+          var postcodeRegEx = /^[A-Z]{1,2}[0-9]{1,2}[A-Z]{0,1} ?[0-9][A-Z]{2}$/i; 
+          return postcodeRegEx.test(postcode); 
+    },
+
     pubToggle(pub){
       pub.selected = !pub.selected
     }

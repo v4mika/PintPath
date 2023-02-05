@@ -1,0 +1,7 @@
+Spilling a drink, +1
+Not finishing your drink, +1
+Falling down, +2
+Missing a hole, +2
+Getting kicked out, or being refused a drink, +3
+Throwing up, +5
+Cheating, + 5
